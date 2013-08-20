@@ -14,10 +14,23 @@ namespace Core.Models.Repository
     /// <typeparam name="TEntity">The type of the T entity.</typeparam>
     public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> where TEntity : class
     {
+        /// <summary>
+        /// Gets or sets the name of the user.
+        /// </summary>
+        /// <value>The name of the user.</value>
         public string UserName { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseRepository{TKey, TEntity}"/> class.
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
         public BaseRepository(string userName)
         {
             this.UserName = userName;
+            if (_context == null)
+            {
+                _context = new CmsContext();
+                Entities = _context.Set<TEntity>();
+            }
         }
         /// <summary>
         /// The _context
@@ -27,17 +40,6 @@ namespace Core.Models.Repository
         /// The entities
         /// </summary>
         private DbSet<TEntity> Entities;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseRepository{TKey, TEntity}"/> class.
-        /// </summary>
-        public BaseRepository()
-        {
-            if (_context == null)
-            {
-                _context = new CmsContext();
-                Entities = _context.Set<TEntity>();
-            }
-        }
         /// <summary>
         /// Gets the specified filter.
         /// </summary>
@@ -70,7 +72,6 @@ namespace Core.Models.Repository
             }
 
         }
-
         /// <summary>
         /// Gets the paging.
         /// </summary>
@@ -103,7 +104,6 @@ namespace Core.Models.Repository
                 return null;
             }
         }
-
         /// <summary>
         /// Gets all.
         /// </summary>
@@ -112,7 +112,6 @@ namespace Core.Models.Repository
         {
             return Entities.AsQueryable();
         }
-
         /// <summary>
         /// Gets the by id.
         /// </summary>
@@ -123,7 +122,6 @@ namespace Core.Models.Repository
         {
             return Entities.Find(key);
         }
-
         /// <summary>
         /// Creates the specified entity.
         /// </summary>
@@ -147,7 +145,6 @@ namespace Core.Models.Repository
                 this.SaveChanges();
             return entity;
         }
-
         /// <summary>
         /// Edits the specified key.
         /// </summary>
@@ -161,7 +158,6 @@ namespace Core.Models.Repository
             _context.Entry<TEntity>(entity).State = EntityState.Modified;
             return entity;
         }
-
         /// <summary>
         /// Deletes the specified entity.
         /// </summary>
@@ -174,7 +170,6 @@ namespace Core.Models.Repository
             Entities.Remove(entity);
             return true;
         }
-
         /// <summary>
         /// Saves the change.
         /// </summary>

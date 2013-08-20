@@ -7,8 +7,8 @@ namespace Core.Models
     {
         public Shipment()
         {
-            this.ShipmentCarrierDatas = new List<ShipmentCarrierData>();
-            this.ShipmentItems = new List<ShipmentItem>();
+            //this.ShipmentCarrierDatas = new List<ShipmentCarrierData>();
+            //this.ShipmentItems = new List<ShipmentItem>();
         }
 
         public long ShipmentId { get; set; }
@@ -49,10 +49,10 @@ namespace Core.Models
         public Nullable<int> CreationFileId { get; set; }
         public Nullable<int> BrokerManifestFileId { get; set; }
         public Nullable<int> CarrierManifestFileId { get; set; }
-        public virtual ICollection<ShipmentCarrierData> ShipmentCarrierDatas { get; set; }
-        public virtual ICollection<ShipmentItem> ShipmentItems { get; set; }
-        public virtual Site Site { get; set; }
-        public virtual ShippingParty ShippingParty { get; set; }
-        public virtual ShippingParty ShippingParty1 { get; set; }
+        //public virtual ICollection<ShipmentCarrierData> ShipmentCarrierDatas { get; set; }
+        //public virtual ICollection<ShipmentItem> ShipmentItems { get; set; }
+        //public virtual Site Site { get; set; }
+        //public virtual ShippingParty ShippingParty { get; set; }
+        //public virtual ShippingParty ShippingParty1 { get; set; }
     }
 }

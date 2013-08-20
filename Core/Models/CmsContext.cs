@@ -13,7 +13,7 @@ namespace Core.Models
         }
 
         public CmsContext()
-            : base("Name=CmsConnectionString")
+            : base("Name=LocalConnectionString")
         {
             this.Configuration.LazyLoadingEnabled = false;
         }
@@ -24,25 +24,14 @@ namespace Core.Models
         }
 
         public DbSet<Carrier> Carriers { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<ShipmentCarrierData> ShipmentCarrierDatas { get; set; }
-        public DbSet<ShipmentItem> ShipmentItems { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
-        public DbSet<ShippingParty> ShippingParties { get; set; }
-        public DbSet<ShippingPartyType> ShippingPartyTypes { get; set; }
-        public DbSet<Site> Sites { get; set; }
         public DbSet<TrackingEvent> TrackingEvents { get; set; }
         public DbSet<TrackingMap> TrackingMaps { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new CarrierMap());
-            modelBuilder.Configurations.Add(new CountryMap());
-            modelBuilder.Configurations.Add(new ShipmentCarrierDataMap());
-            modelBuilder.Configurations.Add(new ShipmentItemMap());
             modelBuilder.Configurations.Add(new ShipmentMap());
-            modelBuilder.Configurations.Add(new ShippingPartyMap());
-            modelBuilder.Configurations.Add(new ShippingPartyTypeMap());
             modelBuilder.Configurations.Add(new TrackingEventMap());
             modelBuilder.Configurations.Add(new TrackingMapMap());
         }

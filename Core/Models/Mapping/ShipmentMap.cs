@@ -100,15 +100,15 @@ namespace Core.Models.Mapping
             this.Property(t => t.CarrierManifestFileId).HasColumnName("CarrierManifestFileId");
 
             // Relationships
-            this.HasRequired(t => t.Site)
-                .WithMany(t => t.Shipments)
-                .HasForeignKey(d => d.SiteId);
-            this.HasOptional(t => t.ShippingParty)
-                .WithMany(t => t.Shipments)
-                .HasForeignKey(d => d.ConsigneePartyId);
-            this.HasOptional(t => t.ShippingParty1)
-                .WithMany(t => t.Shipments1)
-                .HasForeignKey(d => d.ShipperPartyId);
+            //this.HasRequired(t => t.Site)
+            //    .WithMany(t => t.Shipments)
+            //    .HasForeignKey(d => d.SiteId);
+            //this.HasOptional(t => t.ShippingParty)
+            //    .WithMany(t => t.Shipments)
+            //    .HasForeignKey(d => d.ConsigneePartyId);
+            //this.HasOptional(t => t.ShippingParty1)
+            //    .WithMany(t => t.Shipments1)
+            //    .HasForeignKey(d => d.ShipperPartyId);
 
         }
     }

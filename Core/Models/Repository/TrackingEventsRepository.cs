@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Core.Models.Interface;
 
 namespace Core.Models.Repository
 {
-    public class TrackingEventsRepository:BaseRepository<long, TrackingEvent>
+    public class TrackingEventsRepository:BaseRepository<long, TrackingEvent>, ITrackingEvents
     {
+        public TrackingEventsRepository(string userName):base(userName)
+        {
 
+        }
     }
 }
