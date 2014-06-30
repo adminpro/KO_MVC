@@ -5,7 +5,9 @@ using System.Text;
 
 namespace Core.Models.Interface
 {
-    public interface ICarrier
+    public interface ICarrier<Key>
     {
+        Carrier GetCarrier(Key key);
+        bool ExistsCarrier(Carrier carrier);
     }
 }

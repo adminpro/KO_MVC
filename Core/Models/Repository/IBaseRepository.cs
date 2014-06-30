@@ -12,10 +12,12 @@ namespace Core.Models.Repository
         IEnumerable<TEntity> GetPaging(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, string includeProperties, int pIndex, int pSize);
         IQueryable<TEntity> GetAll();
         TEntity GetById(TKey key);
-        TEntity Create(TEntity entity);
+        List<TEntity> SqlQuery(string spName, string[] spParam);
         TEntity Create(TEntity entity, bool saveChanges);
-        TEntity Edit(TKey key, TEntity entity);
-        bool Delete(TEntity entity);
+        bool Create(List<TEntity> listEntity, bool saveChanges);
+        TEntity Edit(TKey key, TEntity entity, bool saveChanges);
+        bool Exists(TKey key);
+        bool Delete(TEntity entity, bool saveChanges);
         bool SaveChanges();
     }
 }

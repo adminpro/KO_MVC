@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data.Entity;
 using System.Linq.Expressions;
 
@@ -20,7 +19,18 @@ namespace Core.Models.Repository
         /// <value>The name of the user.</value>
         public string UserName { get; set; }
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseRepository{TKey, TEntity}"/> class.
+        /// Gets total record.
+        /// </summary>
+        /// <value>The total record.</value>
+        public int TotalRecord
+        {
+            get
+            {
+                return Entities.Count();
+            }
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseRepository{TKey, TEntity}" /> class.
         /// </summary>
         /// <param name="userName">Name of the user.</param>
         public BaseRepository(string userName)
@@ -47,7 +57,8 @@ namespace Core.Models.Repository
         /// <param name="orderBy">The order by.</param>
         /// <param name="includeProperties">The include properties.</param>
         /// <returns>IEnumerable{`1}.</returns>
-        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, string includeProperties)
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, 
+            IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = Entities;
 
@@ -81,7 +92,8 @@ namespace Core.Models.Repository
         /// <param name="pIndex">Index of the p.</param>
         /// <param name="pSize">Size of the p.</param>
         /// <returns>IEnumerable{`1}.</returns>
-        public IEnumerable<TEntity> GetPaging(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, string includeProperties, int pIndex, int pSize)
+        public IEnumerable<TEntity> GetPaging(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, 
+            IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int pIndex = 0, int pSize = 20)
         {
             IQueryable<TEntity> query = Entities;
             if (filter != null)
@@ -123,14 +135,23 @@ namespace Core.Models.Repository
             return Entities.Find(key);
         }
         /// <summary>
-        /// Creates the specified entity.
+        /// SQLs the query.
         /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns>`1.</returns>
-        public TEntity Create(TEntity entity)
+        /// <param name="spName">Name of the store procedure.</param>
+        /// <param name="spParam">The store procedure param.</param>
+        /// <returns>List{`1}.</returns>
+        public List<TEntity> SqlQuery(string spName, string[] spParam)
         {
-            Entities.Add(entity);
-            return entity;
+            return Entities.SqlQuery(spName, spParam).ToList<TEntity>();
+        }
+        /// <summary>
+        /// Exists the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
+        public bool Exists(TKey key)
+        {
+            return Entities.Find(key) != null;
         }
         /// <summary>
         /// Creates the specified entity.
@@ -138,7 +159,7 @@ namespace Core.Models.Repository
         /// <param name="entity">The entity.</param>
         /// <param name="saveChanges">if set to <c>true</c> [save changes].</param>
         /// <returns>`1.</returns>
-        public TEntity Create(TEntity entity, bool saveChanges)
+        public TEntity Create(TEntity entity, bool saveChanges = true)
         {
             Entities.Add(entity);
             if (saveChanges)
@@ -146,34 +167,63 @@ namespace Core.Models.Repository
             return entity;
         }
         /// <summary>
+        /// Creates the specified list entity.
+        /// </summary>
+        /// <param name="listEntity">The list entity.</param>
+        /// <param name="saveChanges">if set to <c>true</c> [save changes].</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
+        public bool Create(List<TEntity> listEntity, bool saveChanges = true)
+        {
+            try
+            {
+                Entities.AddRange(listEntity);
+                if (saveChanges)
+                    this.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        /// <summary>
         /// Edits the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="entity">The entity.</param>
+        /// <param name="saveChanges">if set to <c>true</c> [save changes].</param>
         /// <returns>`1.</returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public TEntity Edit(TKey key, TEntity entity)
+        public TEntity Edit(TKey key, TEntity entity, bool saveChanges = true)
         {
-            Entities.Attach(entity);
-            _context.Entry<TEntity>(entity).State = EntityState.Modified;
-            return entity;
+            if (this.Exists(key))
+            {
+                Entities.Attach(entity);
+                _context.Entry<TEntity>(entity).State = EntityState.Modified;
+                if (saveChanges)
+                    this.SaveChanges();
+                return entity;
+            }
+            return null;
         }
         /// <summary>
         /// Deletes the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
+        /// <param name="saveChanges">if set to <c>true</c> [save changes].</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        public bool Delete(TEntity entity)
+        public bool Delete(TEntity entity, bool saveChanges = true)
         {
             if (entity == null)
                 return false;
             Entities.Remove(entity);
+            if (saveChanges)
+                this.SaveChanges();
             return true;
         }
         /// <summary>
         /// Saves the change.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         /// <exception cref="System.NotImplementedException"></exception>
         public bool SaveChanges()

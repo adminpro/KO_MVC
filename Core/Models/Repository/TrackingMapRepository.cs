@@ -4,7 +4,7 @@ using Core.Models.Interface;
 
 namespace Core.Models.Repository
 {
-    public class TrackingMapRepository: BaseRepository<int,TrackingMap>, ITrackingMap
+    public class TrackingMapRepository: BaseRepository<int,TrackingMap>, ITrackingMap<int>
     {
         public TrackingMapRepository(string userName):base(userName)
         {

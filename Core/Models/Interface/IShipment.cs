@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Models.Interface
 {
-    interface IShipment
+    interface IShipment<Key>
     {
     }
 }

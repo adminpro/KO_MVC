@@ -2,7 +2,7 @@
 
 namespace Core.Models.Repository
 {
-    public class ShipmentRepository:BaseRepository<int, Shipment>, IShipment
+    public class ShipmentRepository:BaseRepository<int, Shipment>, IShipment<int>
     {
         public ShipmentRepository(string userName):base(userName)
         {

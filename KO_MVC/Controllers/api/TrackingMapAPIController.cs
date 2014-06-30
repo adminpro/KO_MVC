@@ -48,10 +48,9 @@ namespace KO_MVC.Controllers.api
         /// </summary>
         /// <param name="trackingMap">The tracking map.</param>
         /// <returns><c>true</c> if save success, <c>false</c> otherwise</returns>
-        public bool Create(TrackingMap trackingMap)
+        public TrackingMap Create(TrackingMap trackingMap)
         {
-            _trackingMapRepository.Create(trackingMap);
-            return _trackingMapRepository.SaveChanges();
+            return _trackingMapRepository.Create(trackingMap);
         }
 
         /// <summary>
@@ -62,17 +61,7 @@ namespace KO_MVC.Controllers.api
         /// <returns>TrackingMap.</returns>
         public TrackingMap Edit(int trackingMapId, TrackingMap trackingMap)
         {
-            var existsTrackingMap = _trackingMapRepository.GetById(trackingMapId);
-            if (existsTrackingMap!=null)
-            {
-                existsTrackingMap.CarrierId = trackingMap.CarrierId;
-                existsTrackingMap.EswCode = trackingMap.EswCode;
-                existsTrackingMap.CarrierCode = trackingMap.CarrierCode;
-                existsTrackingMap.Description = trackingMap.Description;
-            }
-            if (_trackingMapRepository.SaveChanges())
-                return trackingMap;
-            return null;
+            return _trackingMapRepository.Edit(trackingMapId, trackingMap);
         }
 
         /// <summary>
@@ -82,13 +71,7 @@ namespace KO_MVC.Controllers.api
         /// <returns><c>true</c> if exists entity in db, <c>false</c> otherwise</returns>
         public bool Delete(int trackingMapId)
         {
-            var existsTrackingMap = _trackingMapRepository.GetById(trackingMapId);
-            if (existsTrackingMap != null)
-            {
-                _trackingMapRepository.Delete(existsTrackingMap);
-                return _trackingMapRepository.SaveChanges();
-            }
-            return false;
+            return _trackingMapRepository.Delete(_trackingMapRepository.GetById(trackingMapId));
         }
     }
 }
